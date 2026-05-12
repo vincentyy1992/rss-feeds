@@ -40,13 +40,14 @@ jobs:
         run: |
           python t66y_index_rss.py --retries 5 -o rss.xml
           python bad_news_rss.py -o bad_news.xml
-          python t66y_fid16_rss.py -o t66y_fid16.xml
+          python t66y_fid16_rss.py -o t66y_fid16.xml || echo "t66y_fid16 failed, skipped"
 
       - name: Commit and push RSS files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add rss.xml bad_news.xml t66y_fid16.xml
+          git add rss.xml bad_news.xml
+          if [ -f t66y_fid16.xml ]; then git add t66y_fid16.xml; fi
           git diff --cached --quiet || git commit -m "update rss feeds"
           git pull --rebase origin main
           git push
