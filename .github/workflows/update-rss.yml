@@ -37,4 +37,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add rss.xml bad_news.xml
           git diff --cached --quiet || git commit -m "update rss feeds"
+          git pull --rebase origin main
           git push
